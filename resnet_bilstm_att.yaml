@@ -1,4 +1,5 @@
-seed: 42
+seed: 42                      # partición train/val/test (fija)
+semillas_entrenamiento: [42, 43, 44]   # ablación: media ± desv.
 dataset: multi (RLVS + Hockey Fight + Movies Fight)
 seq_len: 16
 img_size: 224

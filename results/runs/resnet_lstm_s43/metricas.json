@@ -1,0 +1,71 @@
+{
+ "modo": "resnet_lstm",
+ "robusto": false,
+ "semilla": 43,
+ "val_f1": 0.9793388429752066,
+ "test": {
+  "accuracy": 0.9874739039665971,
+  "precision": 0.9794238683127572,
+  "recall": 0.99581589958159,
+  "f1": 0.9875518672199171,
+  "auc": 0.9971059972105998,
+  "confusion": [
+   [
+    235,
+    5
+   ],
+   [
+    1,
+    238
+   ]
+  ],
+  "por_fuente": {
+   "RLVS": {
+    "n": 282,
+    "accuracy": 0.9858156028368794
+   },
+   "hockey-fight-vidoes": {
+    "n": 158,
+    "accuracy": 0.9873417721518988
+   },
+   "movies-fight-detection-dataset": {
+    "n": 39,
+    "accuracy": 1.0
+   }
+  }
+ },
+ "test_cctv": {
+  "accuracy": 0.8058455114822547,
+  "precision": 0.9345238095238095,
+  "recall": 0.6569037656903766,
+  "f1": 0.7714987714987716,
+  "auc": 0.939069037656904,
+  "confusion": [
+   [
+    229,
+    11
+   ],
+   [
+    82,
+    157
+   ]
+  ],
+  "por_fuente": {
+   "RLVS": {
+    "n": 282,
+    "accuracy": 0.8120567375886525
+   },
+   "hockey-fight-vidoes": {
+    "n": 158,
+    "accuracy": 0.810126582278481
+   },
+   "movies-fight-detection-dataset": {
+    "n": 39,
+    "accuracy": 0.7435897435897436
+   }
+  }
+ },
+ "minutos": 6.606718516349792,
+ "vram_gb": 1.8586220741271973,
+ "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition"
+}

@@ -34,6 +34,7 @@ class SpatioTemporalViolenceModel(nn.Module):
       - mode='baseline_avg'       -> ResNet-50 + Temporal Average Pooling
       - mode='resnet_rnn'         -> ResNet-50 + Vanilla RNN
       - mode='resnet_lstm'        -> ResNet-50 + LSTM Unidireccional
+      - mode='resnet_bilstm'      -> ResNet-50 + Bi-LSTM con promedio temporal (ablación: sin atención)
       - mode='resnet_bilstm_attn' -> ResNet-50 + Bi-LSTM + Atención Temporal (propuesto)
     """
 
@@ -44,12 +45,14 @@ class SpatioTemporalViolenceModel(nn.Module):
         hidden_dim=256,
         dropout=0.3,
         freeze_backbone=True,
+        pretrained=False,
     ):
         super().__init__()
         self.mode = mode
 
         # 1. Extractor espacial: ResNet-50
-        resnet = models.resnet50(weights=None)  # pesos se cargan del checkpoint
+        # pretrained=True para entrenar (ImageNet); en inferencia los pesos se cargan del checkpoint
+        resnet = models.resnet50(weights=models.ResNet50_Weights.IMAGENET1K_V2 if pretrained else None)
         self.backbone_features = nn.Sequential(*list(resnet.children())[:-2])
         self.global_pool = nn.AdaptiveAvgPool2d((1, 1))
 
@@ -76,6 +79,11 @@ class SpatioTemporalViolenceModel(nn.Module):
         elif mode == "resnet_lstm":
             self.rnn = nn.LSTM(embed_dim, hidden_dim, num_layers=1, batch_first=True)
             clf_in_dim = hidden_dim
+        elif mode == "resnet_bilstm":
+            self.rnn = nn.LSTM(
+                embed_dim, hidden_dim, num_layers=1, batch_first=True, bidirectional=True
+            )
+            clf_in_dim = hidden_dim * 2
         elif mode == "resnet_bilstm_attn":
             self.rnn = nn.LSTM(
                 embed_dim, hidden_dim, num_layers=1, batch_first=True, bidirectional=True
@@ -109,6 +117,10 @@ class SpatioTemporalViolenceModel(nn.Module):
             context = rnn_out[:, -1, :]
             attn_weights = torch.zeros((B, T), device=x.device)
             attn_weights[:, -1] = 1.0
+        elif self.mode == "resnet_bilstm":
+            rnn_out, _ = self.rnn(embedded)
+            context = rnn_out.mean(dim=1)
+            attn_weights = torch.full((B, T), 1.0 / T, device=x.device)
         elif self.mode == "resnet_bilstm_attn":
             rnn_out, _ = self.rnn(embedded)
             context, attn_weights = self.attention(rnn_out)

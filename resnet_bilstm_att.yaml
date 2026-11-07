@@ -1,0 +1,17 @@
+seed: 42
+dataset: multi (RLVS + Hockey Fight + Movies Fight)
+seq_len: 16
+img_size: 224
+batch_size: 16
+epochs: 7
+learning_rate: 0.0003
+weight_decay: 0.0001
+backbone: resnet50_imagenet1k_v2
+embed_dim: 512
+hidden_dim: 256
+dropout: 0.3
+label_smoothing: 0.05
+optimizer: AdamW
+scheduler: CosineAnnealingLR
+mixed_precision: true
+freeze_backbone: true   # se descongela solo layer4

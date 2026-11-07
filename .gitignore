@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Modelos y datos pesados
+*.pt
+*.pth
+*.ckpt
+*.npy
+*.h5
+checkpoints/
+cache_mp4/
+data/
+*.mp4
+*.avi
+*.mkv
+*.mov
+
+# Resultados intermedios grandes
+results/*.png
+results/*.jpg
+results/*.csv
+
+# Sistema
+.DS_Store
+Thumbs.db
+.env
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
